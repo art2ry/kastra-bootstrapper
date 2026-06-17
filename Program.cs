@@ -15,7 +15,7 @@ namespace KastraPlayerLauncher
     {
         const string Protocol = "bbclient";
         const string BaseUrl = "https://kastra.lol";
-        const string Version = "1.1.1";
+        const string Version = "1.1.2";
         const string Repo = "art2ry/kastra-bootstrapper";
 
         static string Root => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Kastra");
@@ -134,9 +134,15 @@ namespace KastraPlayerLauncher
 
         static string JoinArgs(string place, string ticket)
         {
+            // The patched RobloxPlayerBeta (Boost.program_options) accepts:
+            //   authenticationUrl,a   authenticationTicket,t   joinScriptUrl,j
+            // It does NOT take a "--play" verb and the 2014/2018 builds reject
+            // "-b" (browserTrackerId is not a command-line option). Verified by
+            // test-launch: -a/-t/-j parses cleanly and the client reaches the
+            // PlaceLauncher request. Mirrors the reference launcher's argv.
             var auth = BaseUrl + "/Login/Negotiate.ashx";
             var join = BaseUrl + "/game/PlaceLauncher.ashx?placeId=" + place + "&ticket=" + Uri.EscapeDataString(ticket);
-            return "--play -a \"" + auth + "\" -t \"" + ticket + "\" -j \"" + join + "\"";
+            return "-a \"" + auth + "\" -t \"" + ticket + "\" -j \"" + join + "\"";
         }
 
         static async Task Download(string url, string dir, LauncherForm form)
