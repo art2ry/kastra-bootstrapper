@@ -15,7 +15,7 @@ namespace KastraPlayerLauncher
     {
         const string Protocol = "bbclient";
         const string BaseUrl = "https://kastra.lol";
-        const string Version = "1.1.0";
+        const string Version = "1.1.1";
         const string Repo = "art2ry/kastra-bootstrapper";
 
         static string Root => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Kastra");
@@ -136,7 +136,7 @@ namespace KastraPlayerLauncher
         {
             var auth = BaseUrl + "/Login/Negotiate.ashx";
             var join = BaseUrl + "/game/PlaceLauncher.ashx?placeId=" + place + "&ticket=" + Uri.EscapeDataString(ticket);
-            return "--play -a \"" + auth + "\" -t \"" + ticket + "\" -j \"" + join + "\" -b 0";
+            return "--play -a \"" + auth + "\" -t \"" + ticket + "\" -j \"" + join + "\"";
         }
 
         static async Task Download(string url, string dir, LauncherForm form)
